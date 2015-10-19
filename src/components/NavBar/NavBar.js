@@ -1,14 +1,38 @@
 import { Component, PropTypes } from 'react';
+import SearchFilter from '../SearchFilter';
 
 export default class NavBar extends Component {
-	static propTypes = {
+	constructor(props){
+    super(props);
+    this.state = {
+      currentFilter: ''
+    };
+  }
+
+  static propTypes = {
 		components: PropTypes.array.isRequired
 	}
 
-	renderComponents() {
-		let { components } = this.props;
+  onChange = (filter) => {
+    console.log('OnChange: '+filter);
+    this.setState({
+      currentFilter: filter
+    });
+  }
 
-		return components.map((component) => {
+	renderLinks() {
+		let { components } = this.props;
+    console.log(this.props);
+    console.log(this.state);
+
+		return components.filter((component) => {
+      if(this.state.currentFilter != ''){
+        return component.name.includes(this.state.currentFilter);
+      }
+      else{
+        return true;
+      }
+    }).map((component) => {
 			return (
 				<div>
           <a href={this._buildLink(component)}>{component.name}</a>
@@ -24,8 +48,9 @@ export default class NavBar extends Component {
 	render() {
 		return (
       <div>
+        <SearchFilter components={this.props.components} onChange={this.onChange}/>
   			<div>
-  				{this.renderComponents()}
+  				{this.renderLinks()}
   			</div>
       </div>
 		);
