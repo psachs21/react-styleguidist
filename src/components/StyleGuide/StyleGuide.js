@@ -1,6 +1,6 @@
 import { Component, PropTypes } from 'react';
 import Components from 'components/Components';
-
+import NavBar from 'components/NavBar';
 import s from './StyleGuide.css';
 
 export default class StyleGuide extends Component {
@@ -17,9 +17,13 @@ export default class StyleGuide extends Component {
 
 		return (
 			<div className={s.root}>
-				<h1 className={s.heading}>{title}</h1>
-				<div>
-					<Components highlightTheme={highlightTheme} components={components}/>
+				<div className={s.nav}>
+					<NavBar components={components}/>
+				</div>
+				<div className={s.content}>
+					<div>
+						<Components highlightTheme={highlightTheme} components={components}/>
+					</div>
 				</div>
 			</div>
 		);

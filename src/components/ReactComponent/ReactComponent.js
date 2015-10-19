@@ -45,7 +45,7 @@ export default class ReactComponent extends Component {
 		let { component } = this.props;
 		return (
 			<div className={s.root}>
-				<h2 className={s.heading}>{component.name}</h2>
+				<h2 className={s.heading}><a name={component.name}>{component.name}</a></h2>
 				{this.renderDescription()}
 				<Props props={component.props}/>
 				{this.renderExamples()}

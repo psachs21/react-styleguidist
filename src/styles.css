@@ -1,8 +1,13 @@
 @import 'sanitize.css/dist/sanitize.css';
 
+:global html {
+	height: 100%;
+}
+
 :global body {
 	color: #333;
 	background: #fff;
+	height: 100%;
 }
 
 :global a,
@@ -70,4 +75,8 @@
 	padding-right: 1rem;
 	padding-bottom: .5em;
 	text-align:left;
+}
+
+:global #app {
+	height: 100%;
 }
