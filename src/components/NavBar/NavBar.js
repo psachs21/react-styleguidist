@@ -24,7 +24,7 @@ export default class NavBar extends Component {
 
 		return components.filter((component) => {
       if(this.state.currentFilter != ''){
-        return component.name.toLowerCase().includes(this.state.currentFilter);
+        return component.name.toLowerCase().includes(this.state.currentFilter.toLowerCase();
       }
       else{
         return true;
