@@ -14,7 +14,6 @@ export default class NavBar extends Component {
 	}
 
   onChange = (filter) => {
-    console.log('OnChange: '+filter);
     this.setState({
       currentFilter: filter
     });
@@ -22,12 +21,10 @@ export default class NavBar extends Component {
 
 	renderLinks() {
 		let { components } = this.props;
-    console.log(this.props);
-    console.log(this.state);
 
 		return components.filter((component) => {
       if(this.state.currentFilter != ''){
-        return component.name.includes(this.state.currentFilter);
+        return component.name.toLowerCase().includes(this.state.currentFilter);
       }
       else{
         return true;
@@ -48,7 +45,7 @@ export default class NavBar extends Component {
 	render() {
 		return (
       <div>
-        <SearchFilter components={this.props.components} onChange={this.onChange}/>
+        <SearchFilter components={this.props.components} filter={this.state.currentFilter} onChange={this.onChange}/>
   			<div>
   				{this.renderLinks()}
   			</div>
