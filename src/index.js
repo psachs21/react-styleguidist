@@ -1,6 +1,6 @@
 import React from 'react';
 import { setComponentsNames, globalizeComponents } from './utils/utils';
-import StyleGuide from 'components/StyleGuide';
+//var StyleGuide = require('components/StyleGuide');
 
 import './styles.css';
 
@@ -11,9 +11,13 @@ if (module.hot) {
 }
 
 // Load styleguide
-let { title, components, highlightTheme } = require('styleguide!');
+let { title, components, highlightTheme, baseComponent } = require('styleguide!');
+
 
 components = setComponentsNames(components);
 globalizeComponents(components);
 
-React.render(<StyleGuide title={title} highlightTheme={highlightTheme} components={components}/>, document.getElementById('app'));
+
+console.log("=====");
+console.log(baseComponent);
+React.render(<baseComponent.module title={title} highlightTheme={highlightTheme} components={components}/>, document.getElementById('app'));

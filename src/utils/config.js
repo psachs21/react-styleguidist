@@ -20,7 +20,8 @@ var DEFAULT_CONFIG = {
 	getExampleFilename: function(componentpath) {
 		return path.join(path.dirname(componentpath), 'Readme.md');
 	},
-	updateWebpackConfig: null
+	updateWebpackConfig: null,
+	baseComponentLocation: path.join(__dirname, '../components/StyleGuide')
 };
 
 function readConfig() {

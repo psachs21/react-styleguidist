@@ -44,7 +44,9 @@ module.exports.pitch = function() {
 		'module.exports = {',
 		'	title: ' + JSON.stringify(config.title) + ',',
 		'	highlightTheme: ' + JSON.stringify(config.highlightTheme) + ',',
-		'	components: [' + components.join(',') + ']',
+		'	components: [' + components.join(',') + '],',
+		' baseComponent: { filepath: ' + JSON.stringify(config.baseComponentLocation) +',',
+			' module: ' + requireIt(config.baseComponentLocation) + '}',
 		'};'
 	].join('\n');
 };
