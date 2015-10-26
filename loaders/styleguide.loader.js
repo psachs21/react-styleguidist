@@ -41,10 +41,28 @@ module.exports.pitch = function() {
 	var components = componentSources.map(processComponent);
 
 	return [
+		'function setComponentsNames(c) {',
+		'	return c.map(function(c1) {',
+		'		var module = c1.module;',
+		'		c1.name = module.displayName || module.name;',
+		'		if (!c1.name) {',
+		'			throw Error("Cannot detect component name for " + c1.filepath);',
+		'		}',
+		'		return c1;',
+		'	});',
+		'}',
+
+		'function globalizeComponents(c3) {',
+		'	c3.map(function(c4) {',
+		'		global[c4.name] = c4.module;',
+		'	});',
+		'}',
+		'var components = setComponentsNames([' + components.join(',') + ']);',
+		'globalizeComponents(components);',
 		'module.exports = {',
 		'	title: ' + JSON.stringify(config.title) + ',',
 		'	highlightTheme: ' + JSON.stringify(config.highlightTheme) + ',',
-		'	components: [' + components.join(',') + ']',
+		'	components: components',
 		'};'
 	].join('\n');
 };
