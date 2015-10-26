@@ -5,7 +5,6 @@ var prettyjson = require('prettyjson');
 var config = require('../utils/config');
 
 function processComponent(filepath) {
-	console.log("processing component: "+filepath);
 	var examplesFile = config.getExampleFilename(filepath);
 	var hasExamples = !!fs.existsSync(examplesFile);
 	return '{' + [
