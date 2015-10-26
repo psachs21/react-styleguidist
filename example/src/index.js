@@ -1,6 +1,6 @@
 import React from 'react';
 import { Utils } from 'react-styleguidist';
-import StyleGuide  from 'components/StyleGuide';
+import StyleGuide  from './components/StyleGuide';
 
 import './styles.css';
 

@@ -1,15 +1,15 @@
 var fs = require('fs');
 var path = require('path');
-var findup = require('findup');
+//var findup = require('findup');
 var minimist = require('minimist');
-var prettyjson = require('prettyjson');
+//var prettyjson = require('prettyjson');
 var _ = require('lodash');
 var utils = require('./server');
 
 var CONFIG_FILENAME = 'styleguide.config.js';
 var DEFAULT_CONFIG = {
-	rootDir: null,
-	components: null,
+	rootDir: './lib',
+	components: '/components/**/*.js',
 	title: 'Style guide',
 	styleguideDir: 'styleguide',
 	template: path.join(__dirname, '../example/src/templates/index.html'),
@@ -26,7 +26,7 @@ var DEFAULT_CONFIG = {
 function readConfig() {
 	var argv = minimist(process.argv.slice(2));
 	var configFilepath = findConfig(argv);
-	var options = require(configFilepath);
+	var options = DEFAULT_CONFIG;//require(configFilepath, false, /^$/);
 
 	validateConfig(options);
 
@@ -40,7 +40,7 @@ function readConfig() {
 		throw Error('Styleguidist: "rootDir" directory not found: ' + rootDir);
 	}
 
-	options = _.merge({}, DEFAULT_CONFIG, options);
+	options = _.merge({}, DEFAULT_CONFIG);
 	options = _.merge({}, options, {
 		verbose: !!argv.verbose,
 		rootDir: rootDir,
@@ -50,7 +50,7 @@ function readConfig() {
 	if (options.verbose) {
 		console.log();
 		console.log('Using config file:', configFilepath);
-		console.log(prettyjson.render(options));
+		//console.log(prettyjson.render(options));
 		console.log();
 	}
 
@@ -70,15 +70,15 @@ function findConfig(argv) {
 	else {
 		// Search config file in all parent directories
 
-		var configDir;
-		try {
-			configDir = findup.sync(__dirname, CONFIG_FILENAME);
-		}
-		catch (e) {
-			throw Error('Styleguidist config not found: ' + CONFIG_FILENAME + '.');
-		}
-
-		return path.join(configDir, CONFIG_FILENAME);
+		// var configDir;
+		// try {
+		// 	configDir = findup.sync(__dirname, CONFIG_FILENAME);
+		// }
+		// catch (e) {
+		// 	throw Error('Styleguidist config not found: ' + CONFIG_FILENAME + '.');
+		// }
+		//
+		// return path.join(configDir, CONFIG_FILENAME);
 	}
 }
 
@@ -97,6 +97,4 @@ function validateConfig(options) {
 	}
 }
 
-module.exports = {
-	readConfig: readConfig
-};
+module.exports = readConfig();

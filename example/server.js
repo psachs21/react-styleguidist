@@ -4,12 +4,9 @@
 var express = require('express');
 var webpack = require('webpack');
 var makeWebpackConfig = require('react-styleguidist').MakeWebPackConfig;
-var config = require('react-styleguidist').Config.readConfig();
 
 var app = express();
-console.log("----");
-console.log(__dirname);
-var compiler = webpack(makeWebpackConfig('development', __dirname, config));
+var compiler = webpack(makeWebpackConfig('development', __dirname + '/src'));
 
 app.use(require('webpack-dev-middleware')(compiler, {
 	noInfo: true
@@ -17,4 +14,4 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.listen(config.serverPort, config.serverHost);
+app.listen(3005, 'localhost');

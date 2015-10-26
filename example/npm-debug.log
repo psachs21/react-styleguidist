@@ -8,7 +8,7 @@
 7 info start example@1.0.0
 8 verbose unsafe-perm in lifecycle true
 9 info example@1.0.0 Failed to exec start script
-10 verbose stack Error: example@1.0.0 start: `./src/server.js --config styleguide.config.js`
+10 verbose stack Error: example@1.0.0 start: `./server.js --config styleguide.config.js`
 10 verbose stack Exit status 1
 10 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:214:16)
 10 verbose stack     at EventEmitter.emit (events.js:110:17)
@@ -23,13 +23,13 @@
 15 error node v0.12.7
 16 error npm  v2.14.4
 17 error code ELIFECYCLE
-18 error example@1.0.0 start: `./src/server.js --config styleguide.config.js`
+18 error example@1.0.0 start: `./server.js --config styleguide.config.js`
 18 error Exit status 1
-19 error Failed at the example@1.0.0 start script './src/server.js --config styleguide.config.js'.
+19 error Failed at the example@1.0.0 start script './server.js --config styleguide.config.js'.
 19 error This is most likely a problem with the example package,
 19 error not with npm itself.
 19 error Tell the author that this fails on your system:
-19 error     ./src/server.js --config styleguide.config.js
+19 error     ./server.js --config styleguide.config.js
 19 error You can get their info via:
 19 error     npm owner ls example
 19 error There is likely additional logging output above.

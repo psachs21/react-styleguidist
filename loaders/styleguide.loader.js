@@ -1,8 +1,8 @@
 var fs = require('fs');
 var path = require('path');
 var glob = require('glob');
-var prettyjson = require('prettyjson');
-var config = require('../utils/config').readConfig();
+//var prettyjson = require('prettyjson');
+var config = require('../utils/config');
 
 function processComponent(filepath) {
 	var examplesFile = config.getExampleFilename(filepath);
@@ -34,7 +34,7 @@ module.exports.pitch = function() {
 	if (config.verbose) {
 		console.log();
 		console.log('Loading components:');
-		console.log(prettyjson.render(componentSources));
+		//console.log(prettyjson.render(componentSources));
 		console.log();
 	}
 

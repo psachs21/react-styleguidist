@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var marked = require('marked');
-var config = require('../utils/config').readConfig();
 
 var defaultRenderer = marked.Renderer.prototype;
 
