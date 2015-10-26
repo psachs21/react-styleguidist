@@ -14,11 +14,12 @@ React components style guide generator with a hot reloaded (style guide) dev ser
 npm install --save-dev react-styleguidist
 ```
 
-Add a `styleguide.config.js` file into your project’s root folder:
+Copy the example project into your projects root. Edit the `styleguide.config.js` to point to your components.
 
 ```javascript
 module.exports = {
-	rootDir: './lib',
+	componentsToDocDirectory: '../lib',
+	rootDir:	'./src'
 	components: './components/**/*.js'
 };
 ```
@@ -60,19 +61,26 @@ Any [Markdown](http://daringfireball.net/projects/markdown/):
 
 ## Configuration
 
-You can change some settings in the `styleguide.config.js` file in your project’s root folder.
+You can change some settings in the `styleguide.config.js` file.
 
-### rootDir
+### componentsToDocDir
 
 Type: `String`, required
 
-Your app’s frontend root folder (eg. `./lib`). Should not point to a folder with the Styleguidist config and `node_modules` folder.
+Your app’s frontend components folder (eg. `./lib`). Should not point to a folder with the Styleguidist config and `node_modules` folder. Must be relative to configuration file.
+
+## rootDir
+
+Type: `String`, required
+
+This directory is used to render the styleguide. Also relative to configuration file.
+
 
 ### components
 
 Type: `String`, required
 
-- String: a [glob pattern](https://github.com/isaacs/node-glob#glob-primer) that matches all your component modules. Relative to the `rootDir`.
+- String: a [glob pattern](https://github.com/isaacs/node-glob#glob-primer) that matches all your component modules. Relative to the `componentsToDocDir`.
 - Function: function that returns an array of modules.
 
 If your components look like `components/Button.js` or `components/Button/Button.js` or `components/Button/index.js`:
@@ -161,7 +169,7 @@ updateWebpackConfig: function(webpackConfig, env) {
 ```javascript
 module.exports = {
 	title: 'Style guide example',
-	rootDir: './example',
+	componentsToDocDir: './example',
 	components: './**/*.js',
 	getExampleFilename: function(componentpath) {
 		return componentpath.replace(/\.js$/, '.examples.md');

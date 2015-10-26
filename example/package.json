@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "./bin/styleguidist server --config styleguide.config.js",
+    "start": "./bin/command server --config styleguide.config.js",
     "lint": "eslint src --ext .js",
-    "build": "./bin/styleguidist build --config styleguide.config.js"
+    "build": "./bin/command build --config styleguide.config.js"
   },
   "bin": {
     "command": "bin/command"

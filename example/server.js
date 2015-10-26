@@ -6,7 +6,7 @@ var config = styleguidist.Config;
 
 module.exports = function server(callback) {
 	var app = express();
-	var compiler = webpack(makeWebpackConfig('development', __dirname, 'src'));
+	var compiler = webpack(makeWebpackConfig('development'));
 
 	app.use(require('webpack-dev-middleware')(compiler, {
 		noInfo: true

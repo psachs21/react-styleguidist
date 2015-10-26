@@ -8,8 +8,9 @@ var merge = require('webpack-merge');
 var prettyjson = require('prettyjson');
 var config = require('./config');
 
-module.exports = function(env, srcDirectory, srcFolder) {
+module.exports = function(env) {
 	var isProd = env === 'production';
+	var srcDirectory = config.rootDir;
 
 	var codeMirrorPath = path.join(__dirname, '../../codemirror');  // npm 3
 	if (!fs.existsSync(codeMirrorPath)) {
@@ -23,8 +24,8 @@ module.exports = function(env, srcDirectory, srcFolder) {
 
 	var includes = [
 		__dirname,
-	  path.join(srcDirectory, srcFolder),
-		config.rootDir
+		srcDirectory,
+		config.componentsToDocDir
 	];
 
 	var webpackConfig = {
@@ -33,11 +34,11 @@ module.exports = function(env, srcDirectory, srcFolder) {
 			filename: 'build/bundle.js'
 		},
 		resolve: {
-			root: [srcDirectory, path.join(srcDirectory, srcFolder), config.rootDir],
+			root: [config.configDir, srcDirectory, config.componentsToDocDir],
 			extensions: ['', '.js', '.jsx'],
 			modulesDirectories: [
 				path.resolve(__dirname, '../node_modules'),
-				path.resolve(srcDirectory, 'node_modules'),
+				path.resolve(config.configDir, 'node_modules'),
 				'node_modules'
 			],
 			alias: {
@@ -48,7 +49,7 @@ module.exports = function(env, srcDirectory, srcFolder) {
 			modulesDirectories: [
 				path.resolve(__dirname, '../loaders'),
 				path.resolve(__dirname, '../node_modules'),
-				path.resolve(srcDirectory, 'node_modules'),
+				path.resolve(config.configDir, 'node_modules'),
 				'node_modules'
 			]
 		},
@@ -75,7 +76,7 @@ module.exports = function(env, srcDirectory, srcFolder) {
 		}
 	};
 
-	var entryScript = path.join(srcDirectory, 'src', 'index');
+	var entryScript = path.join(srcDirectory, 'index');
 
 	if (isProd) {
 		webpackConfig = merge(webpackConfig, {
@@ -195,7 +196,7 @@ module.exports = function(env, srcDirectory, srcFolder) {
 		console.log();
 		console.log('Using Webpack config:');
 		console.log(prettyjson.render(webpackConfig));
-		console.log();
+	  console.log();
 	}
 
 	return webpackConfig;

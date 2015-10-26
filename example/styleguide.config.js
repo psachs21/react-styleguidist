@@ -1,9 +1,10 @@
 module.exports = {
 	title: 'Style guide example',
-	rootDir: './lib',
+	componentsToDocDir: './lib',
 	components: function(config, glob) {
-		return glob.sync(config.rootDir + '/components/**/*.js').filter(function(module) {
+		return glob.sync(config.componentsToDocDir + '/components/**/*.js').filter(function(module) {
 			return /\/[A-Z][a-z]*\.js$/.test(module);
 		});
-	}
+	},
+	rootDir: './src'
 };

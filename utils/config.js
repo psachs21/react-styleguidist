@@ -8,7 +8,7 @@ var utils = require('./server');
 
 var CONFIG_FILENAME = 'styleguide.config.js';
 var DEFAULT_CONFIG = {
-	rootDir: './lib',
+	componentsToDocDir: './lib',
 	components: '/components/**/*.js',
 	title: 'Style guide',
 	styleguideDir: 'styleguide',
@@ -20,7 +20,8 @@ var DEFAULT_CONFIG = {
 	getExampleFilename: function(componentpath) {
 		return path.join(path.dirname(componentpath), 'Readme.md');
 	},
-	updateWebpackConfig: null
+	updateWebpackConfig: null,
+	rootDir:	'./src'
 };
 
 function readConfig() {
@@ -31,20 +32,22 @@ function readConfig() {
 	validateConfig(options);
 
 	var configDir = path.dirname(configFilepath);
-	var rootDir = path.resolve(configDir, options.rootDir);
+	var componentsToDocDir = path.resolve(configDir, options.componentsToDocDir);
 
-	if (rootDir === configDir) {
-		throw Error('Styleguidist: "rootDir" should not point to a folder with the Styleguidist config and node_modules folder');
+	if (componentsToDocDir === configDir) {
+		throw Error('Styleguidist: "componentsToDocDir" should not point to a folder with the Styleguidist config and node_modules folder');
 	}
-	if (!utils.isDirectoryExists(rootDir)) {
-		throw Error('Styleguidist: "rootDir" directory not found: ' + rootDir);
+	if (!utils.isDirectoryExists(componentsToDocDir)) {
+		throw Error('Styleguidist: "componentsToDocDir" directory not found: ' + componentsToDocDir);
 	}
 
 	options = _.merge({}, DEFAULT_CONFIG, options);
 	options = _.merge({}, options, {
 		verbose: !!argv.verbose,
-		rootDir: rootDir,
-		styleguideDir: path.resolve(configDir, options.styleguideDir)
+		componentsToDocDir: componentsToDocDir,
+		styleguideDir: path.resolve(configDir, options.styleguideDir),
+		rootDir: path.resolve(configDir, options.rootDir),
+		configDir: configDir
 	});
 
 	if (options.verbose) {
@@ -85,6 +88,9 @@ function findConfig(argv) {
 function validateConfig(options) {
 	if (!options.rootDir) {
 		throw Error('Styleguidist: "rootDir" options is required.');
+	}
+	if (!options.componentsToDocDir) {
+		throw Error('Styleguidist: "componentsToDocDir" options is required.');
 	}
 	if (!options.components) {
 		throw Error('Styleguidist: "components" options is required.');

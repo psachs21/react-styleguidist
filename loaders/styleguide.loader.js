@@ -28,7 +28,7 @@ module.exports.pitch = function() {
 		componentSources = config.components(config, glob);
 	}
 	else {
-		componentSources = glob.sync(path.join(config.rootDir, config.components));
+		componentSources = glob.sync(path.join(config.componentsToDocDir, config.components));
 	}
 
 	if (config.verbose) {
