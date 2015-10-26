@@ -1,17 +1,20 @@
-#!/usr/bin/env node
-'use strict';
-
 var express = require('express');
 var webpack = require('webpack');
-var makeWebpackConfig = require('react-styleguidist').MakeWebPackConfig;
+var styleguidist = require('react-styleguidist');
+var makeWebpackConfig = styleguidist.MakeWebpackConfig;
+var config = styleguidist.Config;
 
-var app = express();
-var compiler = webpack(makeWebpackConfig('development', __dirname, 'src'));
+module.exports = function server(callback) {
+	var app = express();
+	var compiler = webpack(makeWebpackConfig('development', __dirname, 'src'));
 
-app.use(require('webpack-dev-middleware')(compiler, {
-	noInfo: true
-}));
+	app.use(require('webpack-dev-middleware')(compiler, {
+		noInfo: true
+	}));
 
-app.use(require('webpack-hot-middleware')(compiler));
+	app.use(require('webpack-hot-middleware')(compiler));
 
-app.listen(3005, 'localhost');
+	app.listen(config.serverPort, config.serverHost, function(err) {
+		callback(err, config);
+	});
+};

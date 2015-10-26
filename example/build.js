@@ -1,5 +1,10 @@
 var webpack = require('webpack');
-var makeWebpackConfig = require('react-styleguidist').MakeWebpackConfig;
-var config = require('react-styleguidist').Config.readConfig();
+var styleguidist = require('react-styleguidist');
+var makeWebpackConfig = styleguidist.MakeWebpackConfig;
+var config = styleguidist.Config;
 
-webpack(makeWebpackConfig('production'), __dirname, config);
+module.exports = function build(callback) {
+	webpack(makeWebpackConfig('production', __dirname, 'src'), function(err, stats) {
+		callback(err, stats, config);
+	});
+};

@@ -29,7 +29,6 @@ function globalizeComponents(components) {
 	});
 }
 
-console.log(components);
 
 components = setComponentsNames(components);
 globalizeComponents(components);
