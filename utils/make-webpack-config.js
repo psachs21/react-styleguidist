@@ -8,9 +8,10 @@ var merge = require('webpack-merge');
 //var prettyjson = require('prettyjson');
 var config = require('./config');
 
-module.exports = function(env, srcDirectory) {
+module.exports = function(env, srcDirectory, srcFolder) {
 	var isProd = env === 'production';
-
+	console.log("==============");
+	console.log(config.rootDir);
 	var codeMirrorPath = path.join(__dirname, '../../codemirror');  // npm 3
 	if (!fs.existsSync(codeMirrorPath)) {
 		codeMirrorPath = path.join(__dirname, '../node_modules/react-codemirror/node_modules/codemirror');  // npm 2
@@ -23,20 +24,22 @@ module.exports = function(env, srcDirectory) {
 
 	var includes = [
 		__dirname,
-	  srcDirectory,
+	  path.join(srcDirectory, srcFolder),
 		config.rootDir
 	];
+	console.log("------------");
+	console.log(includes);
 	var webpackConfig = {
 		output: {
 			path: config.styleguideDir,
 			filename: 'build/bundle.js'
 		},
 		resolve: {
-			root: [srcDirectory],
+			root: [srcDirectory, path.join(srcDirectory, srcFolder), config.rootDir],
 			extensions: ['', '.js', '.jsx'],
 			modulesDirectories: [
 				path.resolve(__dirname, '../node_modules'),
-				path.resolve(srcDirectory, '../node_modules'),
+				path.resolve(srcDirectory, 'node_modules'),
 				'node_modules'
 			],
 			alias: {
@@ -47,7 +50,7 @@ module.exports = function(env, srcDirectory) {
 			modulesDirectories: [
 				path.resolve(__dirname, '../loaders'),
 				path.resolve(__dirname, '../node_modules'),
-				path.resolve(srcDirectory, '../node_modules'),
+				path.resolve(srcDirectory, 'node_modules'),
 				'node_modules'
 			]
 		},
@@ -74,7 +77,7 @@ module.exports = function(env, srcDirectory) {
 		}
 	};
 
-	var entryScript = path.join(srcDirectory, 'index');
+	var entryScript = path.join(srcDirectory, 'src', 'index');
 
 	if (isProd) {
 		webpackConfig = merge(webpackConfig, {
@@ -118,6 +121,10 @@ module.exports = function(env, srcDirectory) {
 						test: /\.css$/,
 						include: includes,
 						loader: ExtractTextPlugin.extract('style', 'css?modules&-minimize&importLoaders=1!postcss')
+					},
+					{
+						test: /\.json$/,
+						loader: 'json'
 					}
 				]
 			}

@@ -2,7 +2,23 @@ var fs = require('fs');
 var path = require('path');
 var glob = require('glob');
 //var prettyjson = require('prettyjson');
-var config = require('../utils/config');
+//var config = require('../utils/config');
+
+var config = {
+	rootDir: './lib',
+	components: '/components/**/*.js',
+	title: 'Style guide',
+	styleguideDir: 'styleguide',
+	template: path.join(__dirname, '../example/src/templates/index.html'),
+	serverHost: 'localhost',
+	serverPort: 3000,
+	highlightTheme: 'base16-light',
+	verbose: false,
+	getExampleFilename: function(componentpath) {
+		return path.join(path.dirname(componentpath), 'Readme.md');
+	},
+	updateWebpackConfig: null
+};
 
 function processComponent(filepath) {
 	var examplesFile = config.getExampleFilename(filepath);
