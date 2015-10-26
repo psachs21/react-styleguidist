@@ -1,8 +1,8 @@
 var fs = require('fs');
 var path = require('path');
-//var findup = require('findup');
+var findup = require('findup');
 var minimist = require('minimist');
-//var prettyjson = require('prettyjson');
+var prettyjson = require('prettyjson');
 var _ = require('lodash');
 var utils = require('./server');
 
@@ -26,7 +26,7 @@ var DEFAULT_CONFIG = {
 function readConfig() {
 	var argv = minimist(process.argv.slice(2));
 	var configFilepath = findConfig(argv);
-	var options = DEFAULT_CONFIG;//require(configFilepath, false, /^$/);
+	var options = require(configFilepath);
 
 	validateConfig(options);
 
@@ -40,7 +40,7 @@ function readConfig() {
 		throw Error('Styleguidist: "rootDir" directory not found: ' + rootDir);
 	}
 
-	options = _.merge({}, DEFAULT_CONFIG);
+	options = _.merge({}, DEFAULT_CONFIG, options);
 	options = _.merge({}, options, {
 		verbose: !!argv.verbose,
 		rootDir: rootDir,
@@ -50,7 +50,7 @@ function readConfig() {
 	if (options.verbose) {
 		console.log();
 		console.log('Using config file:', configFilepath);
-		//console.log(prettyjson.render(options));
+		console.log(prettyjson.render(options));
 		console.log();
 	}
 
@@ -68,17 +68,17 @@ function findConfig(argv) {
 		return configFilepath;
 	}
 	else {
-		// Search config file in all parent directories
+		//Search config file in all parent directories
 
-		// var configDir;
-		// try {
-		// 	configDir = findup.sync(__dirname, CONFIG_FILENAME);
-		// }
-		// catch (e) {
-		// 	throw Error('Styleguidist config not found: ' + CONFIG_FILENAME + '.');
-		// }
-		//
-		// return path.join(configDir, CONFIG_FILENAME);
+		var configDir;
+		try {
+			configDir = findup.sync(__dirname, CONFIG_FILENAME);
+		}
+		catch (e) {
+			throw Error('Styleguidist config not found: ' + CONFIG_FILENAME + '.');
+		}
+
+		return path.join(configDir, CONFIG_FILENAME);
 	}
 }
 

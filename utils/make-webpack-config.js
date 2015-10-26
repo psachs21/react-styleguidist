@@ -5,13 +5,12 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var AdvancedVariables = require('postcss-advanced-variables');
 var merge = require('webpack-merge');
-//var prettyjson = require('prettyjson');
+var prettyjson = require('prettyjson');
 var config = require('./config');
 
 module.exports = function(env, srcDirectory, srcFolder) {
 	var isProd = env === 'production';
-	console.log("==============");
-	console.log(config.rootDir);
+
 	var codeMirrorPath = path.join(__dirname, '../../codemirror');  // npm 3
 	if (!fs.existsSync(codeMirrorPath)) {
 		codeMirrorPath = path.join(__dirname, '../node_modules/react-codemirror/node_modules/codemirror');  // npm 2
@@ -27,8 +26,7 @@ module.exports = function(env, srcDirectory, srcFolder) {
 	  path.join(srcDirectory, srcFolder),
 		config.rootDir
 	];
-	console.log("------------");
-	console.log(includes);
+
 	var webpackConfig = {
 		output: {
 			path: config.styleguideDir,
@@ -196,7 +194,7 @@ module.exports = function(env, srcDirectory, srcFolder) {
 	if (config.verbose) {
 		console.log();
 		console.log('Using Webpack config:');
-		//console.log(prettyjson.render(webpackConfig));
+		console.log(prettyjson.render(webpackConfig));
 		console.log();
 	}
 

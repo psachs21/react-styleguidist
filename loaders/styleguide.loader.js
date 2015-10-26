@@ -1,26 +1,11 @@
 var fs = require('fs');
 var path = require('path');
 var glob = require('glob');
-//var prettyjson = require('prettyjson');
-//var config = require('../utils/config');
-
-var config = {
-	rootDir: './lib',
-	components: '/components/**/*.js',
-	title: 'Style guide',
-	styleguideDir: 'styleguide',
-	template: path.join(__dirname, '../example/src/templates/index.html'),
-	serverHost: 'localhost',
-	serverPort: 3000,
-	highlightTheme: 'base16-light',
-	verbose: false,
-	getExampleFilename: function(componentpath) {
-		return path.join(path.dirname(componentpath), 'Readme.md');
-	},
-	updateWebpackConfig: null
-};
+var prettyjson = require('prettyjson');
+var config = require('../utils/config');
 
 function processComponent(filepath) {
+	console.log("processing component: "+filepath);
 	var examplesFile = config.getExampleFilename(filepath);
 	var hasExamples = !!fs.existsSync(examplesFile);
 	return '{' + [
@@ -50,7 +35,7 @@ module.exports.pitch = function() {
 	if (config.verbose) {
 		console.log();
 		console.log('Loading components:');
-		//console.log(prettyjson.render(componentSources));
+		console.log(prettyjson.render(componentSources));
 		console.log();
 	}
 
