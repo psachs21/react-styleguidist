@@ -8,7 +8,7 @@
     "build": "./bin/styleguidist build --config styleguide.config.js"
   },
   "bin": {
-    "styleguidist": "bin/styleguidist"
+    "command": "bin/command"
   },
   "author": "",
   "license": "ISC",

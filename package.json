@@ -17,8 +17,6 @@
   "license": "MIT",
   "main": "index.js",
   "files": [
-    "bin",
-    "src",
     "loaders"
   ],
   "engines": {
