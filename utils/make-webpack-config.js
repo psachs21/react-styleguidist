@@ -6,9 +6,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var AdvancedVariables = require('postcss-advanced-variables');
 var merge = require('webpack-merge');
 var prettyjson = require('prettyjson');
-var config = require('../src/utils/config');
 
-module.exports = function(env) {
+module.exports = function(env, srcDirectory, config) {
 	var isProd = env === 'production';
 
 	var codeMirrorPath = path.join(__dirname, '../../codemirror');  // npm 3
@@ -23,6 +22,7 @@ module.exports = function(env) {
 
 	var includes = [
 		__dirname,
+		srcDirectory,
 		config.rootDir
 	];
 	var webpackConfig = {
@@ -31,10 +31,11 @@ module.exports = function(env) {
 			filename: 'build/bundle.js'
 		},
 		resolve: {
-			root: path.join(__dirname),
+			root: [srcDirectory, __dirname],
 			extensions: ['', '.js', '.jsx'],
 			modulesDirectories: [
 				path.resolve(__dirname, '../node_modules'),
+				path.resolve(srcDirectory, '../node_modules'),
 				'node_modules'
 			],
 			alias: {
@@ -45,6 +46,7 @@ module.exports = function(env) {
 			modulesDirectories: [
 				path.resolve(__dirname, '../loaders'),
 				path.resolve(__dirname, '../node_modules'),
+				path.resolve(srcDirectory, '../node_modules'),
 				'node_modules'
 			]
 		},
@@ -58,7 +60,8 @@ module.exports = function(env) {
 				'process.env': {
 					NODE_ENV: JSON.stringify(env)
 				}
-			})
+			}),
+			new webpack.ContextReplacementPlugin(/colors$/, /^$/)
 		],
 		module: {
 			loaders: [
@@ -71,7 +74,7 @@ module.exports = function(env) {
 		}
 	};
 
-	var entryScript = path.join(__dirname, 'index');
+	var entryScript = path.join(srcDirectory, 'index');
 
 	if (isProd) {
 		webpackConfig = merge(webpackConfig, {

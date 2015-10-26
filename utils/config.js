@@ -12,7 +12,7 @@ var DEFAULT_CONFIG = {
 	components: null,
 	title: 'Style guide',
 	styleguideDir: 'styleguide',
-	template: path.join(__dirname, '../templates/index.html'),
+	template: path.join(__dirname, '../example/src/templates/index.html'),
 	serverHost: 'localhost',
 	serverPort: 3000,
 	highlightTheme: 'base16-light',
@@ -20,14 +20,12 @@ var DEFAULT_CONFIG = {
 	getExampleFilename: function(componentpath) {
 		return path.join(path.dirname(componentpath), 'Readme.md');
 	},
-	updateWebpackConfig: null,
-	baseComponentLocation: path.join(__dirname, '../components/StyleGuide')
+	updateWebpackConfig: null
 };
 
 function readConfig() {
 	var argv = minimist(process.argv.slice(2));
 	var configFilepath = findConfig(argv);
-
 	var options = require(configFilepath);
 
 	validateConfig(options);
@@ -67,7 +65,6 @@ function findConfig(argv) {
 		if (!fs.existsSync(configFilepath)) {
 			throw Error('Styleguidist config not found: ' + configFilepath + '.');
 		}
-
 		return configFilepath;
 	}
 	else {
@@ -100,4 +97,6 @@ function validateConfig(options) {
 	}
 }
 
-module.exports = readConfig();
+module.exports = {
+	readConfig: readConfig
+};

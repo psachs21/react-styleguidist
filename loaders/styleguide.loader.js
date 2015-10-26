@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var glob = require('glob');
 var prettyjson = require('prettyjson');
-var config = require('../src/utils/config');
+var config = require('../utils/config').readConfig();
 
 function processComponent(filepath) {
 	var examplesFile = config.getExampleFilename(filepath);
@@ -44,9 +44,7 @@ module.exports.pitch = function() {
 		'module.exports = {',
 		'	title: ' + JSON.stringify(config.title) + ',',
 		'	highlightTheme: ' + JSON.stringify(config.highlightTheme) + ',',
-		'	components: [' + components.join(',') + '],',
-		' baseComponent: { filepath: ' + JSON.stringify(config.baseComponentLocation) +',',
-			' module: ' + requireIt(config.baseComponentLocation) + '}',
+		'	components: [' + components.join(',') + ']',
 		'};'
 	].join('\n');
 };
