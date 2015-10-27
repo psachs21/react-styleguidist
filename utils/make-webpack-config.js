@@ -24,9 +24,8 @@ module.exports = function(env) {
 
 	var includes = [
 		__dirname,
-		srcDirectory,
-		config.componentsToDocDir
-	];
+		srcDirectory
+	].concat(config.componentsToDocDir);
 
 	var webpackConfig = {
 		output: {
@@ -34,7 +33,7 @@ module.exports = function(env) {
 			filename: 'build/bundle.js'
 		},
 		resolve: {
-			root: [config.configDir, srcDirectory, config.componentsToDocDir],
+			root: [config.configDir, srcDirectory].concat(config.componentsToDocDir),
 			extensions: ['', '.js', '.jsx'],
 			modulesDirectories: [
 				path.resolve(__dirname, '../node_modules'),
@@ -130,6 +129,25 @@ module.exports = function(env) {
 		});
 	}
 	else {
+		var plugins = [
+			new webpack.optimize.OccurenceOrderPlugin(),
+			new webpack.HotModuleReplacementPlugin()];
+		var reactTransforms = [
+			{
+				transform: 'react-transform-hmr',
+				imports: ['react'],
+				locals: ['module']
+			}
+		];
+
+		if (config.hideErrors) {
+			plugins = plugins.concat(new webpack.NoErrorsPlugin());
+			reactTransforms = reactTransforms.concat({
+				transform: 'react-transform-catch-errors',
+				imports: ['react', 'redbox-react']
+			});
+		}
+
 		webpackConfig = merge(webpackConfig, {
 			entry: [
 				'webpack-hot-middleware/client',
@@ -142,11 +160,7 @@ module.exports = function(env) {
 				colors: true,
 				reasons: true
 			},
-			plugins: [
-				new webpack.optimize.OccurenceOrderPlugin(),
-				new webpack.HotModuleReplacementPlugin(),
-				new webpack.NoErrorsPlugin()
-			],
+			plugins: plugins,
 			module: {
 				loaders: [
 					{
@@ -158,17 +172,7 @@ module.exports = function(env) {
 							plugins: [reactTransformPath],
 							extra: {
 								'react-transform': {
-									transforms: [
-										{
-											transform: 'react-transform-hmr',
-											imports: ['react'],
-											locals: ['module']
-										},
-										{
-											transform: 'react-transform-catch-errors',
-											imports: ['react', 'redbox-react']
-										}
-									]
+									transforms: reactTransforms
 								}
 							}
 						}

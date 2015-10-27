@@ -28,7 +28,9 @@ module.exports.pitch = function() {
 		componentSources = config.components(config, glob);
 	}
 	else {
-		componentSources = glob.sync(path.join(config.componentsToDocDir, config.components));
+		config.componentsToDocDir.map(function (dir) {
+			componentSources = componentSources.concat(glob.sync(path.join(dir, config.components)));
+		});
 	}
 
 	if (config.verbose) {
@@ -45,16 +47,15 @@ module.exports.pitch = function() {
 		'	return c.map(function(c1) {',
 		'		var module = c1.module;',
 		'		c1.name = module.displayName || module.name;',
-		'		if (!c1.name) {',
-		'			throw Error("Cannot detect component name for " + c1.filepath);',
-		'		}',
 		'		return c1;',
+		'	}).filter(function(component){',
+		'		return component.name;',
 		'	});',
 		'}',
 
 		'function globalizeComponents(c3) {',
 		'	c3.map(function(c4) {',
-		'		global[c4.name] = c4.module;',
+		'		if(c4)	global[c4.name] = c4.module;',
 		'	});',
 		'}',
 		'var components = setComponentsNames([' + components.join(',') + ']);',

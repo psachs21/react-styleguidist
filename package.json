@@ -65,9 +65,9 @@
   },
   "scripts": {
     "test": "npm run lint && npm run build",
-    "start": "./bin/styleguidist server --config example/styleguide.config.js",
+    "start": "./example/bin/command server --config example/styleguide.config.js",
     "lint": "eslint src --ext .js",
-    "build": "./bin/styleguidist build --config example/styleguide.config.js",
+    "build": "./example/bin/command build --config example/styleguide.config.js",
     "publish": "npm run build && gulp gh-pages"
   },
   "keywords": [

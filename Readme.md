@@ -18,7 +18,7 @@ Copy the example project into your projects root. Edit the `styleguide.config.js
 
 ```javascript
 module.exports = {
-	componentsToDocDirectory: '../lib',
+	componentsToDocDirectory: ['../lib'],
 	rootDir:	'./src'
 	components: './components/**/*.js'
 };
@@ -65,9 +65,9 @@ You can change some settings in the `styleguide.config.js` file.
 
 ### componentsToDocDir
 
-Type: `String`, required
+Type: `Array of strings`, required
 
-Your app’s frontend components folder (eg. `./lib`). Should not point to a folder with the Styleguidist config and `node_modules` folder. Must be relative to configuration file.
+Your app’s frontend components folders (eg. [`./lib`]). Should not point to a folder with the Styleguidist config and `node_modules` folder. Must be relative to configuration file.
 
 ## rootDir
 
@@ -163,6 +163,12 @@ updateWebpackConfig: function(webpackConfig, env) {
 	return webpackConfig;
 }
 ```
+
+### hideErrors
+
+Type: 'Bool', default: false
+
+This flag, if turned on, will obscure errors in components and just show a large error screen. By default, it will just allow the errors to be thrown. Suggested to be false for debugging.
 
 ### Config example
 

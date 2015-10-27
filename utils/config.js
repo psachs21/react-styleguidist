@@ -8,7 +8,7 @@ var utils = require('./server');
 
 var CONFIG_FILENAME = 'styleguide.config.js';
 var DEFAULT_CONFIG = {
-	componentsToDocDir: './lib',
+	componentsToDocDir: ['./lib'],
 	components: '/components/**/*.js',
 	title: 'Style guide',
 	styleguideDir: 'styleguide',
@@ -21,7 +21,8 @@ var DEFAULT_CONFIG = {
 		return path.join(path.dirname(componentpath), 'Readme.md');
 	},
 	updateWebpackConfig: null,
-	rootDir:	'./src'
+	rootDir:	'./src',
+	hideErrors:	false
 };
 
 function readConfig() {
@@ -32,14 +33,18 @@ function readConfig() {
 	validateConfig(options);
 
 	var configDir = path.dirname(configFilepath);
-	var componentsToDocDir = path.resolve(configDir, options.componentsToDocDir);
+	var componentsToDocDir = options.componentsToDocDir.map(function (dir){
+		var docDir = path.resolve(configDir, dir);
+		if (docDir === configDir) {
+			throw Error('Styleguidist: "componentsToDocDir" should not point to a folder with the Styleguidist config and node_modules folder');
+		}
+		if (!utils.isDirectoryExists(docDir)) {
+			throw Error('Styleguidist: "componentsToDocDir" directory not found: ' + docDir);
+		}
+		return docDir;
+	});
 
-	if (componentsToDocDir === configDir) {
-		throw Error('Styleguidist: "componentsToDocDir" should not point to a folder with the Styleguidist config and node_modules folder');
-	}
-	if (!utils.isDirectoryExists(componentsToDocDir)) {
-		throw Error('Styleguidist: "componentsToDocDir" directory not found: ' + componentsToDocDir);
-	}
+
 
 	options = _.merge({}, DEFAULT_CONFIG, options);
 	options = _.merge({}, options, {
