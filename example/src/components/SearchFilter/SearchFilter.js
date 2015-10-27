@@ -19,7 +19,7 @@ export default class SearchFilter extends Component {
     });
   }
 
-  _onChange = () => {
+  _onChange = (event) => {
     this.props.onChange(event.target.value);
   }
 
