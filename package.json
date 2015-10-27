@@ -17,7 +17,9 @@
   "license": "MIT",
   "main": "index.js",
   "files": [
-    "loaders"
+    "loaders",
+    "utils",
+    "example/src/templates/index.html"
   ],
   "engines": {
     "node": ">=0.10.0"
