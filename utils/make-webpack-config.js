@@ -78,6 +78,30 @@ module.exports = function(env) {
 	var entryScript = path.join(srcDirectory, 'index');
 
 	if (isProd) {
+		var plugins = [
+			new webpack.optimize.UglifyJsPlugin({
+				compress: {
+					warnings: false
+				},
+				output: {
+					comments: false
+				},
+				mangle: false
+			}),
+			new webpack.optimize.DedupePlugin(),
+			new ExtractTextPlugin('build/styles.css', {
+				allChunks: true
+			})];
+		var reactTransforms = [];
+
+		if (config.hideErrors) {
+			plugins = plugins.concat(new webpack.NoErrorsPlugin());
+			reactTransforms = reactTransforms.concat({
+				transform: 'react-transform-catch-errors',
+				imports: ['react', config.errorComponent]
+			});
+		}
+
 		webpackConfig = merge(webpackConfig, {
 			entry: [
 				entryScript
@@ -85,21 +109,7 @@ module.exports = function(env) {
 			devtool: false,
 			debug: false,
 			cache: false,
-			plugins: [
-				new webpack.optimize.UglifyJsPlugin({
-					compress: {
-						warnings: false
-					},
-					output: {
-						comments: false
-					},
-					mangle: false
-				}),
-				new webpack.optimize.DedupePlugin(),
-				new ExtractTextPlugin('build/styles.css', {
-					allChunks: true
-				})
-			],
+			plugins: plugins,
 			module: {
 				loaders: [
 					{
@@ -107,7 +117,13 @@ module.exports = function(env) {
 						include: includes,
 						loader: 'babel',
 						query: {
-							stage: 0
+							stage: 0,
+							plugins: [reactTransformPath],
+							extra: {
+								'react-transform': {
+									transforms: reactTransforms
+								}
+							}
 						}
 					},
 					{
@@ -144,7 +160,7 @@ module.exports = function(env) {
 			plugins = plugins.concat(new webpack.NoErrorsPlugin());
 			reactTransforms = reactTransforms.concat({
 				transform: 'react-transform-catch-errors',
-				imports: ['react', 'redbox-react']
+				imports: ['react', config.errorComponent]
 			});
 		}
 

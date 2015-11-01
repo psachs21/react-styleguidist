@@ -22,7 +22,8 @@ var DEFAULT_CONFIG = {
 	},
 	updateWebpackConfig: null,
 	rootDir:	'./src',
-	hideErrors:	false
+	hideErrors:	false,
+	errorComponent: 'redbox-react'
 };
 
 function readConfig() {
