@@ -42,7 +42,7 @@ function readConfig() {
 		if (!utils.isDirectoryExists(docDir)) {
 			throw Error('Styleguidist: "componentsToDocDir" directory not found: ' + docDir);
 		}
-		return docDir;
+		return fs.realpathSync(docDir);
 	});
 
 
