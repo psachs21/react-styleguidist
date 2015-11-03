@@ -17,6 +17,7 @@
   "license": "MIT",
   "main": "index.js",
   "files": [
+    "index.js"
     "loaders",
     "utils",
     "example/src/templates/index.html"
