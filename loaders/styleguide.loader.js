@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var glob = require('glob');
 var prettyjson = require('prettyjson');
-var config = require('../utils/config');
+var config;
 
 function processComponent(filepath) {
 	var examplesFile = config.getExampleFilename(filepath);
@@ -19,9 +19,13 @@ function requireIt(filepath) {
 	return 'require(' + JSON.stringify(filepath) + ')';
 }
 
-module.exports = function() {};
+module.exports = function() {
+};
+
 module.exports.pitch = function() {
 	this.cacheable && this.cacheable();
+
+	config = require(this.resourcePath);
 
 	var componentSources;
 	if (typeof config.components === 'function') {
@@ -61,8 +65,6 @@ module.exports.pitch = function() {
 		'var components = setComponentsNames([' + components.join(',') + ']);',
 		'globalizeComponents(components);',
 		'module.exports = {',
-		'	title: ' + JSON.stringify(config.title) + ',',
-		'	highlightTheme: ' + JSON.stringify(config.highlightTheme) + ',',
 		'	components: components',
 		'};'
 	].join('\n');
