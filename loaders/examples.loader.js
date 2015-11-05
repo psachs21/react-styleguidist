@@ -1,10 +1,6 @@
-var fs = require('fs');
-var path = require('path');
-var marked = require('marked');
+var marked = require('meta-marked');
 
-var defaultRenderer = marked.Renderer.prototype;
-
-function readExamples(markdown) {
+readExamples = function(markdown) {
 	var codePlaceholder = '<%{#}%>';
 	var codeChunks = [];
 
@@ -18,7 +14,9 @@ function readExamples(markdown) {
 		return codePlaceholder;
 	};
 
-	var html = marked(markdown, {renderer: renderer});
+	var processed = marked(markdown, {renderer: renderer});
+	var html = processed.html;
+	var meta = processed.meta;
 
 	var chunks = [];
 	var textChunks = html.split(codePlaceholder);
@@ -32,18 +30,18 @@ function readExamples(markdown) {
 		}
 	});
 
-	return chunks;
-}
+	return { examples: chunks, metadata: meta };
+};
 
 module.exports = function (source, map) {
 	this.cacheable && this.cacheable();
 
-	var examples = readExamples(source);
+	var data = readExamples(source);
 
 	return [
 			'if (module.hot) {',
 			'	module.hot.accept([]);',
 			'}',
-			'module.exports = ' + JSON.stringify(examples)
+			'module.exports = ' + JSON.stringify(data)
 		].join('\n');
 };

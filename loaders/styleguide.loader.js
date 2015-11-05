@@ -7,11 +7,14 @@ var config;
 function processComponent(filepath) {
 	var examplesFile = config.getExampleFilename(filepath);
 	var hasExamples = !!fs.existsSync(examplesFile);
+
 	return '{' + [
 			'filepath: ' + JSON.stringify(filepath),
 			'module: ' + requireIt(filepath),
 			'props: ' + requireIt('!!props!' + filepath),
-			'examples: ' + (hasExamples ? requireIt('examples!' + examplesFile) : null)
+			'examples: ' + (hasExamples ? requireIt('examples!' + examplesFile) + '.examples' : null),
+			'metadata: ' + (hasExamples ? requireIt('examples!' + examplesFile) + '.metadata' : null),
+
 		].join(',') + '}';
 }
 

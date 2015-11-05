@@ -1,6 +1,6 @@
 # React Styleguidist
 
-A basic set of loaders basically ripped out of [react-styleguidist](https://github.com/sapegin/react-styleguidist)
+A basic set of loaders basically ripped out of [react-styleguidist](https://github.com/sapegin/react-styleguidist).
 
 
 ## Installation
@@ -25,6 +25,8 @@ Components `PropTypes` are parsed by the [react-docgen](https://github.com/react
 
 Examples are written in Markdown where any code blocks will be rendered as a react components. By default any `Readme.md` in the component folder is treated as an examples file but you can change it with the `getExampleFilename` option.
 
+You can also add some metadata according to [MetaMarkdown](https://github.com/j201/meta-marked) which will be passed into the associated component to be used for whatever purpose you need.
+
 ```markdown
 React component example:
 
@@ -35,6 +37,21 @@ Any [Markdown](http://daringfireball.net/projects/markdown/):
 * Foo;
 * bar;
 * baz.
+```
+
+## Results structure
+
+The `components` returned is an array of objects that look like the following:
+
+```
+filepath: string - absolute path to file.
+module: object - React Module that can be used to render the component.
+props: array of props with the structure defined by react-docgen.
+examples: array of the objects {
+	type: string of 'code' or 'html' - represents the type of text
+	content: content in that chunk of code.
+}
+metadata: object representation of any metadata defined in the associated readme.
 ```
 
 ## Configuration
@@ -83,6 +100,12 @@ getExampleFilename: function(componentpath) {
 	return componentpath.replace(/\.jsx?$/, '.examples.md');
 }
 ```
+
+### verbose
+
+Type: `Boolean`, default: false
+
+Adds more debugging info.
 
 
 ### Config example
